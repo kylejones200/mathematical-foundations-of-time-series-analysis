@@ -29,7 +29,7 @@ def calculate_autocorrelation(series: pd.Series, max_lag: int = 10) -> pd.Series
     return pd.Series(autocorrs, index=range(1, max_lag + 1))
 
 def plot_mathematical_properties(series: pd.Series, acf: pd.Series, title: str, output_path: Path):
- """Plot mathematical properties """
+    """Plot mathematical properties """
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10), sharex=False)
     
     ax1.plot(series.index, series.values, color="#4A90A4", linewidth=1.2)
