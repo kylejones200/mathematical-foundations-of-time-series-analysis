@@ -14,7 +14,7 @@ The mathematical formalization of time series analysis began to take shape in th
 Things got more interesting in the 20th century --- George Udny Yule introduced autoregressive models in 1927. This became the beginning of modern time series analysis. Herman Wold's 1938 decomposition theorem provided a fundamental framework for understanding stationary processes which was extended by George Box and Gwilym Jenkins published their seminal work on ARIMA methodology in 1970. ARIMA has become the most widely used approach to time series modeling and forecasting.
 
 #### Mathematical Foundations
-**Stationarity: The Cornerstone of Time Series Analysis**
+Stationarity: The Cornerstone of Time Series Analysis
 
 At the heart of time series analysis lies the concept of stationarity. A stationary process is one whose statistical properties remain constant over time. This seemingly simple concept is crucial because it allows us to make meaningful predictions and inferences about future behavior based on past observations. Mathematically, a strictly stationary process requires that the joint probability distribution of any collection of observations remains unchanged when shifted in time. In practice, we often work with weak or second-order stationarity, which requires only that the mean and variance remain constant over time, and that the covariance between observations depends only on their time separation (lag) rather than their absolute position in time.
 

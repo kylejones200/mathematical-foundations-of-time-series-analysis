@@ -32,12 +32,12 @@ Edit `config.yaml` to customize:
 ## Mathematical Properties
 
 Fundamental properties:
-- **Mean**: Central tendency
-- **Variance**: Dispersion measure
-- **Standard Deviation**: Square root of variance
-- **Skewness**: Asymmetry measure
-- **Kurtosis**: Tail heaviness
-- **Autocorrelation**: Temporal dependence
+- Mean: Central tendency
+- Variance: Dispersion measure
+- Standard Deviation: Square root of variance
+- Skewness: Asymmetry measure
+- Kurtosis: Tail heaviness
+- Autocorrelation: Temporal dependence
 
 ## Caveats
 
