@@ -10,7 +10,6 @@ import polars as pl
 from datetime import date, timedelta
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
 from core import calculate_statistical_properties, calculate_autocorrelation, plot_mathematical_properties
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
