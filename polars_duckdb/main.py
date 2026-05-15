@@ -2,15 +2,21 @@
 """Mathematical foundations of time series — Polars + DuckDB rewrite."""
 
 import argparse
-import yaml
 import logging
-import numpy as np
-import polars as pl
 from pathlib import Path
 
-from core import calculate_statistical_properties, calculate_autocorrelation, plot_mathematical_properties
+import numpy as np
+import polars as pl
+import yaml
+from core import (
+    calculate_autocorrelation,
+    calculate_statistical_properties,
+    plot_mathematical_properties,
+)
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def load_config(config_path: Path = None) -> dict:
@@ -28,7 +34,11 @@ def main():
     args = parser.parse_args()
 
     config = load_config(args.config)
-    output_dir = Path(args.output_dir) if args.output_dir else Path(config["output"]["figures_dir"])
+    output_dir = (
+        Path(args.output_dir)
+        if args.output_dir
+        else Path(config["output"]["figures_dir"])
+    )
     output_dir.mkdir(exist_ok=True)
 
     if args.data_path and args.data_path.exists():
@@ -58,7 +68,8 @@ def main():
             logging.info(f"  lag {row['lag']:2d}: {row['acf']:.4f}")
 
         plot_mathematical_properties(
-            series, acf,
+            series,
+            acf,
             "Mathematical Foundations of Time Series",
             output_dir / "mathematical_properties.png",
         )

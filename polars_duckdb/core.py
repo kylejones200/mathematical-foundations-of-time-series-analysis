@@ -4,17 +4,19 @@ All descriptive statistics (mean, var, std, skewness, kurtosis, autocorrelation)
 are computed via DuckDB aggregate functions — no pandas Series methods needed.
 """
 
-import duckdb
-import polars as pl
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import duckdb
+import matplotlib.pyplot as plt
+import polars as pl
 
 
 def calculate_statistical_properties(series: pl.Series) -> dict:
     """Descriptive stats via DuckDB — replaces pandas .mean()/.var()/.skew() etc."""
     pl.DataFrame({"idx": range(len(series)), "value": series})
 
-    props = duckdb.sql("""
+    props = (
+        duckdb.sql("""
         WITH lagged AS (
             SELECT value, LAG(value, 1) OVER (ORDER BY idx) AS value_lag1
             FROM df
@@ -29,7 +31,10 @@ def calculate_statistical_properties(series: pl.Series) -> dict:
              FROM lagged
              WHERE value_lag1 IS NOT NULL)              AS autocorr_lag1
         FROM df d
-    """).pl().row(0, named=True)
+    """)
+        .pl()
+        .row(0, named=True)
+    )
 
     return props
 
@@ -43,23 +48,28 @@ def calculate_autocorrelation(series: pl.Series, max_lag: int = 10) -> pl.DataFr
         for lag in range(1, max_lag + 1)
     )
     corr_cols = ",\n        ".join(
-        f"CORR(value, lag_{lag}) AS acf_{lag}"
-        for lag in range(1, max_lag + 1)
+        f"CORR(value, lag_{lag}) AS acf_{lag}" for lag in range(1, max_lag + 1)
     )
 
-    row = duckdb.sql(f"""
+    row = (
+        duckdb.sql(f"""
         WITH lagged AS (
             SELECT value, {lag_cols}
             FROM df
         )
         SELECT {corr_cols}
         FROM lagged
-    """).pl().row(0, named=True)
+    """)
+        .pl()
+        .row(0, named=True)
+    )
 
-    return pl.DataFrame({
-        "lag": list(range(1, max_lag + 1)),
-        "acf": [row[f"acf_{lag}"] for lag in range(1, max_lag + 1)],
-    })
+    return pl.DataFrame(
+        {
+            "lag": list(range(1, max_lag + 1)),
+            "acf": [row[f"acf_{lag}"] for lag in range(1, max_lag + 1)],
+        }
+    )
 
 
 def plot_mathematical_properties(
@@ -76,8 +86,14 @@ def plot_mathematical_properties(
         ax1.set_ylabel("Value")
         ax1.set_title(title)
 
-        ax2.bar(acf["lag"].to_list(), acf["acf"].to_list(),
-                color="#D4A574", alpha=0.7, edgecolor="none", width=0.6)
+        ax2.bar(
+            acf["lag"].to_list(),
+            acf["acf"].to_list(),
+            color="#D4A574",
+            alpha=0.7,
+            edgecolor="none",
+            width=0.6,
+        )
         ax2.axhline(0, color="black", linewidth=0.5, alpha=0.3)
         ax2.set_xlabel("Lag")
         ax2.set_ylabel("ACF")
