@@ -18,7 +18,7 @@ def load_config(config_path: Path = None) -> dict:
     if config_path is None:
         config_path = Path(__file__).parent / 'config.yaml'
     
-    with open(config_path, 'r') as f:
+    with open(config_path) as f:
         return yaml.safe_load(f)
 
 def main():
@@ -48,7 +48,7 @@ def main():
     
         properties = calculate_statistical_properties(series)
     
-    logging.info(f"\nStatistical Properties:")
+    logging.info("\nStatistical Properties:")
     logging.info(f"Mean: {properties['mean']:.4f}")
     logging.info(f"Variance: {properties['variance']:.4f}")
     logging.info(f"Standard Deviation: {properties['std']:.4f}")
@@ -57,7 +57,7 @@ def main():
     logging.info(f"Autocorrelation (lag 1): {properties['autocorr_lag1']:.4f}")
     
     if config['analysis']['calculate_acf']:
-        logging.info(f"\nCalculating autocorrelation function...")
+        logging.info("\nCalculating autocorrelation function...")
         acf = calculate_autocorrelation(series, config['analysis']['max_lag'])
         
         plot_mathematical_properties(series, acf, "Mathematical Foundations of Time Series",

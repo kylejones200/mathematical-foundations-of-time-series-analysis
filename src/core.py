@@ -1,16 +1,14 @@
 """Core functions for mathematical foundations of time series analysis."""
 
-import numpy as np
 import pandas as pd
 from pathlib import Path
-from typing import Dict
 import matplotlib.pyplot as plt
 import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 
-def calculate_statistical_properties(series: pd.Series) -> Dict:
+def calculate_statistical_properties(series: pd.Series) -> dict:
     """Calculate fundamental statistical properties."""
     return {
         'mean': series.mean(),

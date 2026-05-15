@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """Mathematical foundations of time series — Polars + DuckDB rewrite."""
 
-import sys
 import argparse
 import yaml
 import logging
 import numpy as np
 import polars as pl
-from datetime import date, timedelta
 from pathlib import Path
 
 from core import calculate_statistical_properties, calculate_autocorrelation, plot_mathematical_properties

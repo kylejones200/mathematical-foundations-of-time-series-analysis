@@ -6,15 +6,13 @@ are computed via DuckDB aggregate functions — no pandas Series methods needed.
 
 import duckdb
 import polars as pl
-import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
-from typing import Dict
 
 
-def calculate_statistical_properties(series: pl.Series) -> Dict:
+def calculate_statistical_properties(series: pl.Series) -> dict:
     """Descriptive stats via DuckDB — replaces pandas .mean()/.var()/.skew() etc."""
-    df = pl.DataFrame({"idx": range(len(series)), "value": series})
+    pl.DataFrame({"idx": range(len(series)), "value": series})
 
     props = duckdb.sql("""
         WITH lagged AS (
@@ -38,7 +36,7 @@ def calculate_statistical_properties(series: pl.Series) -> Dict:
 
 def calculate_autocorrelation(series: pl.Series, max_lag: int = 10) -> pl.DataFrame:
     """ACF for lags 1..max_lag via DuckDB CORR + LAG window functions."""
-    df = pl.DataFrame({"idx": range(len(series)), "value": series})
+    pl.DataFrame({"idx": range(len(series)), "value": series})
 
     lag_cols = ",\n            ".join(
         f"LAG(value, {lag}) OVER (ORDER BY idx) AS lag_{lag}"
