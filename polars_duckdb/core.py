@@ -78,27 +78,29 @@ def plot_mathematical_properties(
     title: str,
     output_path: Path,
 ):
-    if plot:
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10), sharex=False)
+    if not plot:
+        return
 
-        ax1.plot(series.to_list(), color="#4A90A4", linewidth=1.2)
-        ax1.set_xlabel("Time")
-        ax1.set_ylabel("Value")
-        ax1.set_title(title)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10), sharex=False)
 
-        ax2.bar(
-            acf["lag"].to_list(),
-            acf["acf"].to_list(),
-            color="#D4A574",
-            alpha=0.7,
-            edgecolor="none",
-            width=0.6,
-        )
-        ax2.axhline(0, color="black", linewidth=0.5, alpha=0.3)
-        ax2.set_xlabel("Lag")
-        ax2.set_ylabel("ACF")
-        ax2.set_title("Autocorrelation Function")
+    ax1.plot(series.to_list(), color="#4A90A4", linewidth=1.2)
+    ax1.set_xlabel("Time")
+    ax1.set_ylabel("Value")
+    ax1.set_title(title)
 
-        plt.tight_layout()
-        plt.savefig(output_path, dpi=100, bbox_inches="tight", facecolor="white")
-        plt.close()
+    ax2.bar(
+        acf["lag"].to_list(),
+        acf["acf"].to_list(),
+        color="#D4A574",
+        alpha=0.7,
+        edgecolor="none",
+        width=0.6,
+    )
+    ax2.axhline(0, color="black", linewidth=0.5, alpha=0.3)
+    ax2.set_xlabel("Lag")
+    ax2.set_ylabel("ACF")
+    ax2.set_title("Autocorrelation Function")
+
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=100, bbox_inches="tight", facecolor="white")
+    plt.close()
