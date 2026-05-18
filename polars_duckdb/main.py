@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 
 
-def load_config(config_path: Path = None) -> dict:
+def load_config(config_path: Path | None = None) -> dict:
     if config_path is None:
         config_path = Path(__file__).parent.parent / "config.yaml"
     with open(config_path) as f:
@@ -32,7 +32,6 @@ def main():
     parser.add_argument("--data-path", type=Path, default=None)
     parser.add_argument("--output-dir", type=Path, default=None)
     args = parser.parse_args()
-
     config = load_config(args.config)
     output_dir = (
         Path(args.output_dir)
@@ -40,7 +39,6 @@ def main():
         else Path(config["output"]["figures_dir"])
     )
     output_dir.mkdir(exist_ok=True)
-
     if args.data_path and args.data_path.exists():
         df = pl.read_csv(args.data_path, try_parse_dates=True)
         series = df[config["data"]["value_column"]]
@@ -60,7 +58,6 @@ def main():
     logging.info(f"  Skewness   : {props['skewness']:.4f}")
     logging.info(f"  Kurtosis   : {props['kurtosis']:.4f}")
     logging.info(f"  ACF lag-1  : {props['autocorr_lag1']:.4f}")
-
     if config["analysis"]["calculate_acf"]:
         acf = calculate_autocorrelation(series, config["analysis"]["max_lag"])
         logging.info(f"\nACF (lags 1–{config['analysis']['max_lag']}):")

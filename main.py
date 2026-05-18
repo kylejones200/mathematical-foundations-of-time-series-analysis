@@ -18,7 +18,7 @@ logging.basicConfig(
 )
 
 
-def load_config(config_path: Path = None) -> dict:
+def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "config.yaml"
@@ -39,7 +39,6 @@ def main():
         "--output-dir", type=Path, default=None, help="Output directory"
     )
     args = parser.parse_args()
-
     config = load_config(args.config)
     output_dir = (
         Path(args.output_dir)
@@ -47,7 +46,6 @@ def main():
         else Path(config["output"]["figures_dir"])
     )
     output_dir.mkdir(exist_ok=True)
-
     if args.data_path and args.data_path.exists():
         df = pd.read_csv(args.data_path)
         df[config["data"]["date_column"]] = pd.to_datetime(
@@ -65,7 +63,6 @@ def main():
         series = pd.Series(trend + noise, index=dates)
     else:
         raise ValueError("No data source specified")
-
         properties = calculate_statistical_properties(series)
 
     logging.info("\nStatistical Properties:")
@@ -75,11 +72,9 @@ def main():
     logging.info(f"Skewness: {properties['skewness']:.4f}")
     logging.info(f"Kurtosis: {properties['kurtosis']:.4f}")
     logging.info(f"Autocorrelation (lag 1): {properties['autocorr_lag1']:.4f}")
-
     if config["analysis"]["calculate_acf"]:
         logging.info("\nCalculating autocorrelation function...")
         acf = calculate_autocorrelation(series, config["analysis"]["max_lag"])
-
         plot_mathematical_properties(
             series,
             acf,
